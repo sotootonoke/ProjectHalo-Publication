@@ -77,7 +77,9 @@ public class ProjectHaloPlugin extends Plugin
 		}
 
 		final int varbitId = event.getVarbitId();
-		if (varbitId == Prayer.PROTECT_FROM_MELEE.getVarbit()
+		// A varplayer update can change backing prayer bits without naming one varbit.
+		if (varbitId == -1
+			|| varbitId == Prayer.PROTECT_FROM_MELEE.getVarbit()
 			|| varbitId == Prayer.PROTECT_FROM_MISSILES.getVarbit()
 			|| varbitId == Prayer.PROTECT_FROM_MAGIC.getVarbit())
 		{

@@ -2,21 +2,21 @@
 
 ## Privacy copy
 
-Copied tracked source files only, excluding the original Git history and unrelated workspaces. Removed the computer-specific documentation link. Reset the submission manifest to prevent submitting the old history accidentally. No new Git identity or remote is configured. A verified GitHub noreply email is needed for the first commit. The original source was not edited.
+Copied tracked source files only, excluding the original Git history and unrelated workspaces. Removed the computer-specific documentation link. Reset the submission manifest to prevent submitting the old history accidentally. The clean copy is saved in the private sotootonoke/ProjectHalo-Publication repository with GitHub noreply commit attribution. The original source was not edited.
 
 ## Verification
 
 The source compiles with locally cached RuneLite dependencies in offline mode; current-release compatibility is not yet verified.
 
-Added four JUnit behavior tests. Three pass: protection-prayer colors and opacity; turning off the aura on individual prayer updates; and excluding other players, null players, dead players, and unavailable models. One fails: a varplayer update leaves the old aura cached.
+All six JUnit behavior tests pass with `./gradlew test --offline --no-daemon`: protection-prayer colors and opacity; turning off the aura on individual prayer updates; excluding other players, null players, dead players, and unavailable models; clearing the aura on a varplayer update; activating and switching prayers on varplayer updates; and ignoring varplayer updates while logged out. The clearing regression failed before the production fix.
 
 ProjectHaloPluginTest is only a development launcher. Actual automated checks are in ProjectHaloBehaviorTest. Its proxies and reflection are confined to test sources. No client or account was launched.
 
 ## Stale-aura finding
 
-ProjectHaloPlugin.onVarbitChanged handles only the three individual prayer varbit IDs. RuneLite documents that a varplayer event has varbitId -1. The handler ignores this event even when the backing prayer state changes. The regression activates a prayer, clears its underlying state, sends a varplayer event, and observes that the aura stays cached.
+ProjectHaloPlugin.onVarbitChanged previously handled only the three individual prayer varbit IDs. RuneLite documents that a varplayer event has varbitId -1. The handler ignored this event even when the backing prayer state changed. The regression activates a prayer, clears its underlying state, sends a varplayer event, and checks that the aura disappears.
 
-Suggested correction: refresh prayer state on relevant backing-varplayer updates, or conservatively on varplayer events. Production code was not changed in this review.
+Implemented correction: conservatively refresh prayer state on varplayer events as well as the three prayer varbit IDs. The refresh reads at most three prayer values, preserving the existing rendering path and logged-in guard. It performs no game actions. This fixes the reproduced event-filter regression; it does not establish all in-game lifecycle behavior.
 
 API evidence: https://static.runelite.net/runelite-api/apidocs/net/runelite/api/events/VarbitChanged.html
 

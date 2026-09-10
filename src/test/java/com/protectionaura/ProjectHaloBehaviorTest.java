@@ -101,6 +101,30 @@ public class ProjectHaloBehaviorTest
 		assertNull("A bulk varp change should not leave an old aura cached", plugin.getAuraColor(local));
 	}
 
+	@Test
+	public void varplayerUpdateActivatesAndSwitchesPrayer()
+	{
+		VarbitChanged changed = new VarbitChanged();
+		changed.setVarbitId(-1);
+		prayer = Prayer.PROTECT_FROM_MELEE;
+		plugin.onVarbitChanged(changed);
+		assertEquals(config.meleeColor().getRGB() & 0xffffff, plugin.getAuraColor(local).getRGB() & 0xffffff);
+		prayer = Prayer.PROTECT_FROM_MAGIC;
+		plugin.onVarbitChanged(changed);
+		assertEquals(config.magicColor().getRGB() & 0xffffff, plugin.getAuraColor(local).getRGB() & 0xffffff);
+	}
+
+	@Test
+	public void varplayerUpdateWhileLoggedOutDoesNotCreateAura()
+	{
+		state = GameState.LOGIN_SCREEN;
+		prayer = Prayer.PROTECT_FROM_MELEE;
+		VarbitChanged changed = new VarbitChanged();
+		changed.setVarbitId(-1);
+		plugin.onVarbitChanged(changed);
+		assertNull(plugin.getAuraColor(local));
+	}
+
 	private void assertPrayer(Prayer active, Color expected)
 	{
 		prayer = active;
