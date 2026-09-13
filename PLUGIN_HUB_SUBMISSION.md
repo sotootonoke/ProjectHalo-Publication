@@ -5,7 +5,7 @@ This source copy excludes the original Git history and is saved in the private G
 Before publication:
 
 1. The state-update regression described in REVIEW.md is fixed; all six offline behavior tests pass. Preserve these checks when making further changes.
-2. Run tests against current RuneLite dependencies and complete in-game visual testing.
+2. Dependencies were refreshed and tests passed against RuneLite 1.12.38 on September 10. The user reported all in-game functionality checks passed on September 13. Recheck compatibility if RuneLite updates before submission.
 3. Keep using the exact GitHub-provided noreply email for author and committer. Do not merge the old history into this copy.
 4. Make the clean repository public only after approval and final verification.
 5. Fill in plugin-hub-manifest-template.properties with the new repository and its reviewed commit.

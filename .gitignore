@@ -6,3 +6,11 @@ out/
 .DS_Store
 MacPadPlusPlus/
 gradle/.DS_Store
+
+# Local account credentials must never be committed.
+.runelite/
+credentials.properties
+.env
+.env.*
+*.pem
+*.key
